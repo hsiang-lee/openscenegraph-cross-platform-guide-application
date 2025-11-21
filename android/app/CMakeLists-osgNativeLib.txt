@@ -1,31 +1,31 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.4.1)
+cmake_minimum_required(VERSION 3.4.1)
 
 # Path to external projects:
 # * OpenSceneGraph
 # * openscenegraph-cross-platform-guide-application
-SET(EXT_PROJ_DIR "${CMAKE_SOURCE_DIR}/../..")
+set(EXT_PROJ_DIR "${CMAKE_SOURCE_DIR}/../..")
 
 # Specify critical OpenSceneGraph build variables.
-SET(OPENGL_PROFILE "GLES2" CACHE STRING "OpenGL variant to use")
-SET(DYNAMIC_OPENTHREADS OFF CACHE BOOL "Link OpenThreads statically")
-SET(DYNAMIC_OPENSCENEGRAPH OFF CACHE BOOL "Link OpenSceneGraph statically")
+set(OPENGL_PROFILE "GLES2" CACHE STRING "OpenGL variant to use")
+set(DYNAMIC_OPENTHREADS OFF CACHE BOOL "Link OpenThreads statically")
+set(DYNAMIC_OPENSCENEGRAPH OFF CACHE BOOL "Link OpenSceneGraph statically")
 # Build and reference OpenSceneGraph.
-SET(OSG_SOURCE_DIR "${EXT_PROJ_DIR}/OpenSceneGraph")
-SET(OSG_BUILD_DIR "${EXT_PROJ_DIR}/OpenSceneGraph/build/${ANDROID_ABI}")
-FILE(MAKE_DIRECTORY ${OSG_BUILD_DIR})
-ADD_SUBDIRECTORY(${OSG_SOURCE_DIR} ${OSG_BUILD_DIR})
-INCLUDE_DIRECTORIES(${OSG_SOURCE_DIR}/include)
-INCLUDE_DIRECTORIES(${OSG_BUILD_DIR}/include)
+set(OSG_SOURCE_DIR "${EXT_PROJ_DIR}/OpenSceneGraph")
+set(OSG_BUILD_DIR "${EXT_PROJ_DIR}/OpenSceneGraph/build/${ANDROID_ABI}")
+file(MAKE_DIRECTORY ${OSG_BUILD_DIR})
+add_subdirectory(${OSG_SOURCE_DIR} ${OSG_BUILD_DIR})
+include_directories(${OSG_SOURCE_DIR}/include)
+include_directories(${OSG_BUILD_DIR}/include)
 
 # Reference OpenSceneGraph cross-platform guide application.
-INCLUDE_DIRECTORIES("${EXT_PROJ_DIR}/openscenegraph-cross-platform-guide-application/android/src-gen")
+include_directories("${EXT_PROJ_DIR}/openscenegraph-cross-platform-guide-application/android/src-gen")
 
 # Build osgNativeLib.
-ADD_LIBRARY(osgNativeLib SHARED src/main/cpp/osgNativeLib.cpp)
-FIND_LIBRARY(log-lib log)
+add_library(osgNativeLib SHARED src/main/cpp/osgNativeLib.cpp)
+find_library(log-lib log)
 # Libraries must be linked in the specified order.
 # Otherwise you may get unsatisified linker errors.
-TARGET_LINK_LIBRARIES(
+target_link_libraries(
     osgNativeLib
     ${log-lib}
     GLESv2
